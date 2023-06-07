@@ -1,0 +1,56 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Montserrat";
+}
+
+#app {
+    background-color: lightgrey;
+    margin: 0 auto;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.header__main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.item-card {
+    width: 150px;
+    height: 200px;
+    border: 2px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px;
+    padding: 15px;
+}
+
+.item-card__amount {
+    user-select: none;
+}
+
+.item-card__icon {
+    cursor: pointer;
+}
+
+.item__wrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+.total {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px 0;
+}
