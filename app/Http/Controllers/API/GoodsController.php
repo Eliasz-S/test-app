@@ -43,9 +43,7 @@ class GoodsController extends Controller
         // $goods->update($request->all());
         $goods->amount = $request->amount;
         $goods->save();
-        return response()->json(["data" => [
-            "success" => true
-        ]]);
+        return response()->json("Data successfully updated!");
     }
 
     /**

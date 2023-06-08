@@ -5,8 +5,6 @@ import axios from "axios";
 const App = () => {
     // стейт с товарными позициями
     const [items, setItems] = useState([]);
-    // стейт с изменямой товарной позицией - для изменения количества
-    const [currentItem, setCurrentItem] = useState(null);
 
     // общее количество товаров - мемоизированное значение
     const totalItems = useMemo(() => {
@@ -16,27 +14,36 @@ const App = () => {
 
     // получение всех товаров из базы данных
     const fetchGoodsData = async () => {
-        // в данном компоненте и фетч и аксиос - просто для теста пробовал разные варианты, сперва использовал только фетч
-        const response = await fetch("api/goods");
-        const data = await response.json();
-        setItems([...data]);
+        await axios("api/goods")
+            .then((response) => {
+                setItems([...response.data]);
+            })
+            .catch((e) => console.log(e.message));
+    };
+
+    // отправка обновленных данных на сервер
+    const updateGoodsData = async (item) => {
+        await axios
+            .put(`api/goods/${item.id}`, item)
+            .then((response) => console.log(response.data))
+            .catch((e) => console.log(e.message));
     };
 
     // выбор позиции, количество которой хотим изменить
-    const selectItem = (id) => {
-        const item = items.find((item) => item.id === id);
-        setCurrentItem(() => item);
+    const selectItem = (id, updatedItems) => {
+        const itemToUpdate = updatedItems.find((item) => item.id === id);
+        updateGoodsData(itemToUpdate);
     };
 
     // увеличение количества товара
     const increaseItemAmount = (id) => {
         if (totalItems < 10) {
-            const newData = items.map((item) =>
+            const updatedGoodsData = items.map((item) =>
                 item.id === id ? { ...item, amount: item.amount + 1 } : item
             );
 
-            setItems(() => [...newData]);
-            selectItem(id);
+            setItems(() => [...updatedGoodsData]);
+            selectItem(id, updatedGoodsData);
         } else {
             alert("Достигнут лимит товаров на складе");
         }
@@ -44,29 +51,17 @@ const App = () => {
 
     // уменьшение количества товара
     const decreaseItemAmount = (id) => {
-        setItems((prev) =>
-            prev.map((item) =>
-                item.id === id ? { ...item, amount: item.amount - 1 } : item
-            )
+        const updatedGoodsData = items.map((item) =>
+            item.id === id ? { ...item, amount: item.amount - 1 } : item
         );
-        selectItem(id);
+        setItems(() => [...updatedGoodsData]);
+        selectItem(id, updatedGoodsData);
     };
 
     // при монтировании получаем данные с сервера
     useEffect(() => {
         fetchGoodsData();
     }, []);
-
-    // попытка отследить изменения в items - не вышло
-    useEffect(() => {
-        const updateItem = async (item) => {
-            if (currentItem) {
-                await axios.put(`api/goods/${item.id}`, item);
-            }
-        };
-
-        updateItem(currentItem);
-    }, [items]);
 
     return (
         <div>
