@@ -54,8 +54,8 @@ const App = () => {
             .catch((e) => alert(e.response.data.message));
     };
 
-    // выбор позиции, количество которой хотим изменить
-    const selectItem = (id, updatedItems) => {
+    // обработка изменения количества товара и отправка обновленных актуальных данных на сервер
+    const handleItemChanges = (id, updatedItems) => {
         const itemToUpdate = updatedItems.find((item) => item.id === id);
         updateGoodsData(itemToUpdate, updatedItems);
     };
@@ -66,7 +66,7 @@ const App = () => {
             item.id === id ? { ...item, amount: item.amount + 1 } : item
         );
 
-        selectItem(id, updatedGoodsData);
+        handleItemChanges(id, updatedGoodsData);
     };
 
     // уменьшение количества товара
@@ -74,7 +74,7 @@ const App = () => {
         const updatedGoodsData = items.map((item) =>
             item.id === id ? { ...item, amount: item.amount - 1 } : item
         );
-        selectItem(id, updatedGoodsData);
+        handleItemChanges(id, updatedGoodsData);
     };
 
     // при монтировании получаем данные с сервера
