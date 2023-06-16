@@ -17,8 +17,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::apiResource('goods', GoodsController::class);
 
-Route::put('goods/{goods}', [GoodsController::class, 'update']);
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

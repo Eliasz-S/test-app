@@ -11,5 +11,5 @@ class Goods extends Model
 
     protected $table = 'goods';
 
-    protected $fillable = ['amount'];
+    protected $fillable = ['name', 'amount'];
 }
